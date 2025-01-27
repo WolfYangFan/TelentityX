@@ -16,10 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
 public final class Telentity extends JavaPlugin {
-    private final PluginManager pm;
+    private PluginManager pm;
 
     @Override
     public void onEnable() {
+        this.pm = getServer().getPluginManager();
+        
         final var regiStore = new MainRegiStore(this);
         final var entityTools = new MainEntityTools(this);
         final var unmount = new UnmountResolver(entityTools, this).getUnmount();
@@ -45,7 +47,6 @@ public final class Telentity extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.pm = plugin.getServer().getPluginManager();
         getServer().getPluginManager().getPermissions().forEach(permission -> {
             if (permission.getName().startsWith("telentity")) {
                 pm.removePermission(permission.getName());
