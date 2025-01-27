@@ -33,5 +33,9 @@ public final class Telentity extends JavaPlugin {
         rsp.register(EntityTools.class, entityTools, this, ServicePriority.Highest);
 
         new PlayerTeleportListener(this, regiStore, entityTools.getEntityShowHide());
+
+        getLogger().info("Thanks for using this fork of Telentity!");
+        getLogger().info("If you have any questions or suggestions, feel free to ask us!");
+        getLogger().info("Github: https://github.com/WolfYangFan/Telentity");
     }
 }
