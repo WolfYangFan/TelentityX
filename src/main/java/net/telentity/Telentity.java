@@ -16,12 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
 public final class Telentity extends JavaPlugin {
-    private PluginManager pm;
-
     @Override
     public void onEnable() {
-        this.pm = getServer().getPluginManager();
-        
         final var regiStore = new MainRegiStore(this);
         final var entityTools = new MainEntityTools(this);
         final var unmount = new UnmountResolver(entityTools, this).getUnmount();
@@ -49,7 +45,7 @@ public final class Telentity extends JavaPlugin {
     public void onDisable() {
         getServer().getPluginManager().getPermissions().forEach(permission -> {
             if (permission.getName().startsWith("telentity")) {
-                pm.removePermission(permission.getName());
+                getServer().getPluginManager().removePermission(permission.getName());
             }
         });
         getLogger().info("Thanks for using this fork of Telentity!");
