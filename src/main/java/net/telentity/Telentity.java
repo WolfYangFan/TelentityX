@@ -45,6 +45,7 @@ public final class Telentity extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.pm = plugin.getServer().getPluginManager();
         getServer().getPluginManager().getPermissions().forEach(permission -> {
             if (permission.getName().startsWith("telentity")) {
                 pm.removePermission(permission.getName());
