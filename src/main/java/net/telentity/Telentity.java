@@ -13,8 +13,12 @@ import net.telentity.toolkit.MainEntityTools;
 import net.telentity.unmount.UnmountResolver;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
 
 public final class Telentity extends JavaPlugin {
+    private final PluginManager pm;
+
+    @Override
     public void onEnable() {
         final var regiStore = new MainRegiStore(this);
         final var entityTools = new MainEntityTools(this);
@@ -37,5 +41,15 @@ public final class Telentity extends JavaPlugin {
         getLogger().info("Thanks for using this fork of Telentity!");
         getLogger().info("If you have any questions or suggestions, feel free to ask us!");
         getLogger().info("Github: https://github.com/WolfYangFan/Telentity");
+    }
+
+    @Override
+    public void onDisable() {
+        getServer().getPluginManager().getPermissions().forEach(permission -> {
+            if (permission.getName().startsWith("telentity")) {
+                removePermission(permission.getName());
+            }
+        });
+        getLogger().info("Thanks for using this fork of Telentity!");
     }
 }
