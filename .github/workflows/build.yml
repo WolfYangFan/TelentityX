@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots clean package
+      - name: Get Version from POM
+        run: echo "::set-output name=version::$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)"
+        id: version
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4.6.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          retention-days: 30
+          path: "target/Telentity-${{ steps.version.outputs.version }}.jar"
