@@ -20,12 +20,13 @@ jobs:
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots clean package
       - name: Get Version from POM
-        run: echo "::set-output name=version::$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)"
+        run: echo "version=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
         id: version
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           retention-days: 30
+          name: Telentity-${{ steps.version.outputs.version }}.jar
           path: "target/Telentity-${{ steps.version.outputs.version }}.jar"
